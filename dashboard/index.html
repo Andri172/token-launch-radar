@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — protocols with no token yet, ranked by what a launch would be worth</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-in">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div>
+        <h1>Token Launch Radar</h1>
+        <p class="tagline">Every protocol that still records no token, ranked by what its launch would be worth — and how to farm it before it happens.</p>
+      </div>
+    </div>
+    <div class="mast-meta" id="mastMeta"></div>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<section class="method-strip" id="methodStrip">
+  <h2>How a row is priced — model <span id="modelVersion"></span></h2>
+  <p>
+    A pre-token protocol is priced against the protocols in the same snapshot whose tokens already trade.
+    For each category, the live protocols' market cap / TVL ratios give a <strong>base multiple</strong>
+    (the median, winsorized to [0.02, 3] and shrunk toward the global median so thin categories cannot
+    dominate). Implied value = <strong>TVL &times; base multiple &times; momentum &times; maturity &times; breadth</strong>:
+    momentum damps the 7-day TVL change, maturity rewards time already run with no token, breadth adds a
+    small premium per extra chain. A separate <strong>launch score</strong> (0–100) weighs the category's own
+    token propensity, the protocol's scale, age band, chain breadth and momentum; expected value is implied
+    value weighted by that score. No protocol name is special-cased — the same function prices every row,
+    and live-token protocols are never mixed into the board: they are the evidence, shown under Comparables.
+  </p>
+</section>
+
+<nav class="tabs" id="tabs">
+  <button data-view="board" class="tab active">The board</button>
+  <button data-view="live" class="tab">Comparables — tokens that already trade</button>
+  <button data-view="method" class="tab">Method &amp; category evidence</button>
+</nav>
+
+<main>
+  <section id="view-board">
+    <div class="controls" id="controls">
+      <label class="ctl grow">Search
+        <input id="q" type="search" placeholder="Protocol or category…" autocomplete="off">
+      </label>
+      <label class="ctl">Category
+        <select id="fCategory"></select>
+      </label>
+      <label class="ctl">Chain
+        <select id="fChain"></select>
+      </label>
+      <label class="ctl">Set
+        <select id="fSet">
+          <option value="all">Whole board</option>
+          <option value="watchlist">Watchlist only</option>
+          <option value="early">Early radar only</option>
+        </select>
+      </label>
+      <label class="ctl">Sort by
+        <select id="fSort">
+          <option value="implied">Implied value</option>
+          <option value="expected">Expected value</option>
+          <option value="score">Launch score</option>
+          <option value="tvl">TVL</option>
+          <option value="growth">7-day growth</option>
+          <option value="age">Age</option>
+        </select>
+      </label>
+      <div class="ctl count" id="rowCount"></div>
+    </div>
+    <div class="table-wrap">
+      <table id="board">
+        <thead>
+          <tr>
+            <th class="num">#</th><th>Protocol</th><th>Chains</th>
+            <th class="num">TVL</th><th class="num">7d</th><th class="num">Base &times;</th>
+            <th class="num">Implied value</th><th>Launch score</th><th class="num">Expected</th>
+          </tr>
+        </thead>
+        <tbody id="boardBody"></tbody>
+      </table>
+    </div>
+    <article class="detail" id="detail" hidden></article>
+  </section>
+
+  <section id="view-live" hidden>
+    <p class="view-note">These protocols already have a token: the board never ranks them. They are the
+    comparables the model prices with — each one's market cap / TVL is the market's own answer to what a
+    launch in its category is worth. CEX tokens are excluded: an exchange's token is not evidence about a
+    DeFi launch.</p>
+    <div class="table-wrap">
+      <table id="liveTable">
+        <thead>
+          <tr><th>Protocol</th><th>Category</th><th>Chains</th><th class="num">TVL</th>
+          <th class="num">Market cap</th><th class="num">7d</th><th class="num">Mcap / TVL</th></tr>
+        </thead>
+        <tbody id="liveBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="view-method" hidden>
+    <div class="method-grid">
+      <div class="panel">
+        <h3>The model, in full</h3>
+        <div id="methodText"></div>
+      </div>
+      <div class="panel">
+        <h3>Category evidence</h3>
+        <p class="view-note">Derived only from this snapshot's live-token protocols. A category with no
+        live protocol is priced at the global median multiple.</p>
+        <div class="table-wrap">
+          <table id="catTable">
+            <thead>
+              <tr><th>Category</th><th class="num">Live</th><th class="num">Pre-token</th>
+              <th class="num">Median &times;</th><th class="num">Base &times; used</th><th class="num">Token propensity</th></tr>
+            </thead>
+            <tbody id="catBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p id="footNote"></p>
+  <p class="fine">Implied value is this board's own claim, computed from the snapshot named above; it is not a
+  prediction that a token will be issued, or when. A protocol is listed because its record shows no token —
+  records can lag reality, so check the protocol's own page before acting on a farm plan.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
