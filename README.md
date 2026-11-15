@@ -1,3 +1,9 @@
+[![make.fun bounty](https://make.fun/badge/token-radar-01.svg)](https://make.fun/bounty/token-radar-01)
+[![rank](https://make.fun/badge/token-radar-01/Andri172/token-launch-radar/rank.svg)](https://make.fun/bounty/token-radar-01)
+[![reward](https://make.fun/badge/token-radar-01/Andri172/token-launch-radar/reward.svg)](https://make.fun/bounty/token-radar-01)
+
+Built for the [make.fun](https://make.fun/bounty/token-radar-01) bounty "Build the best token launch radar" (token-radar-01).
+
 # Token Launch Radar
 
 An entry for make.fun's **token-radar-01** bounty ("Build the best token launch radar"), model **radar-2**.
